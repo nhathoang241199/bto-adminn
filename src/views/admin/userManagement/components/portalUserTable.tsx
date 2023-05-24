@@ -1,5 +1,7 @@
 import {
+  Button,
   Flex,
+  Icon,
   Table,
   Tbody,
   Td,
@@ -9,7 +11,7 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -20,11 +22,10 @@ import {
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
+import { MdCancel, MdCheckCircle } from "react-icons/md";
 import { TableProps } from "views/admin/default/variables/columnsData";
-export default function ColumnsTable(props: TableProps) {
+export default function PortalUserTable(props: TableProps) {
   const { columnsData, tableData } = props;
-  console.log("columns: ", columnsData);
-  console.log("data: ", tableData);
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
@@ -65,7 +66,7 @@ export default function ColumnsTable(props: TableProps) {
           fontWeight="700"
           lineHeight="100%"
         >
-          Admin user
+          Portal user
         </Text>
         <Menu />
       </Flex>
@@ -108,6 +109,38 @@ export default function ColumnsTable(props: TableProps) {
                         </Text>
                       </Flex>
                     );
+                  } else if (cell.column.Header === "ACTIVE") {
+                    data = (
+                      <Flex align="center">
+                        <Text
+                          me="10px"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          <Icon
+                            w="24px"
+                            h="24px"
+                            me="5px"
+                            color={cell.value ? "green.500" : "red.500"}
+                            as={cell.value ? MdCheckCircle : MdCancel}
+                          />
+                        </Text>
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "AFF CODE") {
+                    data = (
+                      <Flex align="center">
+                        <Text
+                          me="10px"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          {cell.value}
+                        </Text>
+                      </Flex>
+                    );
                   } else if (cell.column.Header === "USER NAME") {
                     data = (
                       <Flex align="center">
@@ -121,11 +154,46 @@ export default function ColumnsTable(props: TableProps) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "ROLE") {
+                  } else if (cell.column.Header === "EMAIL") {
+                    data = (
+                      <Flex align="center">
+                        <Text
+                          me="10px"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          {cell.value}
+                        </Text>
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "RANK") {
                     data = (
                       <Text color={textColor} fontSize="sm" fontWeight="700">
                         {cell.value}
                       </Text>
+                    );
+                  } else if (cell.column.Header === "REGISTERED") {
+                    data = (
+                      <Flex align="center">
+                        <Text
+                          me="10px"
+                          color={textColor}
+                          fontSize="sm"
+                          fontWeight="700"
+                        >
+                          {cell.value}
+                        </Text>
+                      </Flex>
+                    );
+                  } else if (cell.column.Header === "ACTION") {
+                    data = (
+                      <Flex align="center" direction="column" gap={2}>
+                        <Button colorScheme="blue">Change password</Button>
+                        <Button colorScheme="red" w="full">
+                          Lock
+                        </Button>
+                      </Flex>
                     );
                   }
                   return (

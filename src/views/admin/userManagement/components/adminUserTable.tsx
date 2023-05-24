@@ -1,5 +1,7 @@
 import {
   Flex,
+  Icon,
+  IconButton,
   Table,
   Tbody,
   Td,
@@ -19,12 +21,11 @@ import {
 
 // Custom components
 import Card from "components/card/Card";
-import Menu from "components/menu/MainMenu";
 import { TableProps } from "views/admin/default/variables/columnsData";
-export default function ColumnsTable(props: TableProps) {
+import { AiOutlinePlusCircle } from "react-icons/ai";
+
+export default function AdminUserTable(props: TableProps) {
   const { columnsData, tableData } = props;
-  console.log("columns: ", columnsData);
-  console.log("data: ", tableData);
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
@@ -51,6 +52,7 @@ export default function ColumnsTable(props: TableProps) {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+  const iconColor = useColorModeValue("brand.500", "white");
   return (
     <Card
       flexDirection="column"
@@ -67,7 +69,11 @@ export default function ColumnsTable(props: TableProps) {
         >
           Admin user
         </Text>
-        <Menu />
+        <IconButton
+          aria-label="Search database"
+          borderRadius="10px"
+          icon={<Icon color={iconColor} as={AiOutlinePlusCircle} />}
+        />
       </Flex>
       <Table {...getTableProps()} variant="simple" color="gray.500" mb="24px">
         <Thead>
