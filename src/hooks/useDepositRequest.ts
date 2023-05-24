@@ -1,5 +1,5 @@
-import { getDepositRequest } from "@/services/depositRequest";
-import { getWithdrawRequest } from "@/services/withdrawRequest";
+import { getDepositRequest } from "../services/depositRequest";
+import { getWithdrawRequest } from "../services/withdrawRequest";
 import { useState } from "react";
 import useSWR from "swr";
 const amountRequestPerPage = 5;

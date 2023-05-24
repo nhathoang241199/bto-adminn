@@ -1,4 +1,4 @@
-import { getAdminWallet } from "@/services/adminWallet";
+import { getAdminWallet } from "../services/adminWallet";
 import { useState } from "react";
 import useSWR from "swr";
 const amountWalletPerPage = 5;

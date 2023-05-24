@@ -1,4 +1,4 @@
-import { getPlans } from "@/services/dailyProfit";
+import { getPlans } from "../services/dailyProfit";
 import useSWR from "swr";
 
 const useDailyProfit = () => {

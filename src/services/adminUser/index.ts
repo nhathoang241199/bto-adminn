@@ -53,7 +53,7 @@ export const getAdminUser = async (params: {
   page: number;
   userPerPage: number;
 }) => {
-  const filter = { username: null, role: null };
+  const filter = { username: null as string, role: null as string };
   const data = {
     page: params.page,
     limit: params.userPerPage,
