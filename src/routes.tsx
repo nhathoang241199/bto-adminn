@@ -49,13 +49,13 @@ const routes: IRoute[] = [
     path: "/data-tables",
     component: DataTables,
   },
-  {
-    name: "User management",
-    layout: "/admin",
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-    path: "/user-management",
-    component: UserManagement,
-  },
+  // {
+  //   name: "User management",
+  //   layout: "/admin",
+  //   icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+  //   path: "/user-management",
+  //   component: UserManagement,
+  // },
   {
     name: "Profile",
     layout: "/admin",
