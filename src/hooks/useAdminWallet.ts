@@ -1,7 +1,7 @@
 import { getAdminWallet } from "../services/adminWallet";
 import { useState } from "react";
 import useSWR from "swr";
-const amountWalletPerPage = 5;
+const amountWalletPerPage = 100;
 
 const useAdminWallet = () => {
   const [page, setPage] = useState(1);
@@ -13,8 +13,16 @@ const useAdminWallet = () => {
     },
     getAdminWallet,
   );
+  console.log("data?.data.message.data: ", data?.data.message.data);
   return {
-    data: data?.data.message.data,
+    adminWalletTableData: data?.data.message.data.map((item: any) => ({
+      id: item.id,
+      address: item.publicAddress,
+      role: item.role,
+      active: item.isActived,
+      createdAt: new Date(item.createdAt).toLocaleString("en-US"),
+      balance: item.balance,
+    })),
     isLoading: !error && !data,
     isError: error,
     mutate,

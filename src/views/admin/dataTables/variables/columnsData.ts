@@ -80,3 +80,84 @@ export const columnsDataComplex: Columns = [
     accessor: "progress",
   },
 ];
+
+export const depositRequestColumns: Columns = [
+  {
+    Header: "ID",
+    accessor: "id",
+  },
+  {
+    Header: "USER NAME",
+    accessor: "username",
+  },
+  {
+    Header: "FROM WALLET",
+    accessor: "fromWallet",
+  },
+  {
+    Header: "TO WALLET",
+    accessor: "toWallet",
+  },
+  {
+    Header: "HASH",
+    accessor: "hash",
+  },
+  {
+    Header: "AMOUNT",
+    accessor: "amount",
+  },
+  {
+    Header: "COIN NAME",
+    accessor: "coinName",
+  },
+  {
+    Header: "DATE",
+    accessor: "date",
+  },
+  {
+    Header: "STATUS",
+    accessor: "status",
+  },
+];
+export const withdrawRequestColumns: Columns = [
+  {
+    Header: "ID",
+    accessor: "id",
+  },
+  {
+    Header: "USER NAME",
+    accessor: "username",
+  },
+  {
+    Header: "FROM WALLET",
+    accessor: "fromWallet",
+  },
+  {
+    Header: "TO WALLET",
+    accessor: "toWallet",
+  },
+  {
+    Header: "HASH",
+    accessor: "hash",
+  },
+  {
+    Header: "AMOUNT",
+    accessor: "amount",
+  },
+  {
+    Header: "COIN NAME",
+    accessor: "coinName",
+  },
+  {
+    Header: "DATE",
+    accessor: "date",
+  },
+  {
+    Header: "STATUS",
+    accessor: "status",
+  },
+  {
+    Header: "ACTIONS",
+    accessor: "actions",
+  },
+];

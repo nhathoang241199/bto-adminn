@@ -1,8 +1,7 @@
 import {
-  Button,
   Flex,
   Icon,
-  Input,
+  IconButton,
   Table,
   Tbody,
   Td,
@@ -11,8 +10,21 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  FormControl,
+  Input,
+  FormErrorMessage,
+  Select,
+  useDisclosure,
+  Button,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -22,13 +34,20 @@ import {
 
 // Custom components
 import Card from "components/card/Card";
-import { MdCancel, MdCheckCircle } from "react-icons/md";
 import { TableProps } from "views/admin/default/variables/columnsData";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { ERole, TCreateAccount } from "services/adminUser";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
 import useApi from "hooks/useApi";
+import { MdCancel, MdCheckCircle } from "react-icons/md";
 
-export default function BlackListTable(props: TableProps) {
+export default function AdminWalletTable(props: TableProps) {
   const { columnsData, tableData } = props;
-  const { unbanUser } = useApi();
+
+  console.log("tableData: ", tableData);
+
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -63,9 +82,18 @@ export default function BlackListTable(props: TableProps) {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-  const handleUnbanUser = async (userId: string) => {
-    await unbanUser(userId);
-    props.mutate();
+  const iconColor = useColorModeValue("brand.500", "white");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [role, setRole] = useState("repository");
+
+  const { createWallet, loading } = useApi();
+
+  const handleSubmit = async () => {
+    const result = await createWallet(role);
+    if (result) {
+      props.mutate();
+      onClose();
+    }
   };
 
   return (
@@ -82,8 +110,14 @@ export default function BlackListTable(props: TableProps) {
           fontWeight="700"
           lineHeight="100%"
         >
-          Black list
+          Admin user
         </Text>
+        <IconButton
+          onClick={onOpen}
+          aria-label="Search database"
+          borderRadius="10px"
+          icon={<Icon color={iconColor} as={AiOutlinePlusCircle} />}
+        />
       </Flex>
       <Table {...getTableProps()} variant="simple" color="gray.500" mb="24px">
         <Thead>
@@ -143,7 +177,7 @@ export default function BlackListTable(props: TableProps) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "AFF CODE") {
+                  } else if (cell.column.Header === "ADDRESS") {
                     data = (
                       <Flex align="center">
                         <Text
@@ -156,63 +190,24 @@ export default function BlackListTable(props: TableProps) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "USER NAME") {
-                    data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "EMAIL") {
-                    data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "RANK") {
+                  } else if (cell.column.Header === "ROLE") {
                     data = (
                       <Text color={textColor} fontSize="sm" fontWeight="700">
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "REGISTERED") {
+                  } else if (cell.column.Header === "CREATE AT") {
                     data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {cell.value}
+                      </Text>
                     );
-                  } else if (cell.column.Header === "ACTION") {
+                  }
+                  if (cell.column.Header === "BALANCE") {
                     data = (
-                      <Flex align="center" direction="column" gap={2}>
-                        <Button
-                          onClick={() => handleUnbanUser(row.cells[0].value)}
-                          size="sm"
-                          variant="link"
-                          colorScheme="green"
-                        >
-                          UnLock
-                        </Button>
-                      </Flex>
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {cell.value}
+                      </Text>
                     );
                   }
                   return (
@@ -292,6 +287,45 @@ export default function BlackListTable(props: TableProps) {
           ))}
         </select>
       </div>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create admin wallet</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text mb="8px">Role:</Text>
+            <Select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="repository">Repository</option>
+              <option value="transfer_fee">Transfer fee</option>
+            </Select>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              variant="ghost"
+              mr={3}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              Close
+            </Button>
+            <Button
+              isLoading={loading}
+              onClick={handleSubmit}
+              type="submit"
+              colorScheme="brand"
+            >
+              Create
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Card>
   );
 }

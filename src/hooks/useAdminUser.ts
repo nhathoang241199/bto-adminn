@@ -2,7 +2,7 @@ import { callGetAccountInfo } from "../services/accountInfo";
 import { getAdminUser } from "../services/adminUser";
 import { useState } from "react";
 import useSWR from "swr";
-const amountUserPerPage = 5;
+const amountUserPerPage = 100;
 
 const useAdminUser = () => {
   const [page, setPage] = useState(1);

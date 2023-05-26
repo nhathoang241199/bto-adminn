@@ -1,7 +1,7 @@
 import { getPortalUser } from "../services/portalUser";
 import { useState } from "react";
 import useSWR from "swr";
-const amountUserPerPage = 7;
+const amountUserPerPage = 7000;
 
 export const rankArray = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 

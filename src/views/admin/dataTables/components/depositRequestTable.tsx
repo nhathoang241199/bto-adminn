@@ -22,13 +22,12 @@ import {
 
 // Custom components
 import Card from "components/card/Card";
-import { MdCancel, MdCheckCircle } from "react-icons/md";
+import { MdCancel, MdCheckCircle, MdOutlineError } from "react-icons/md";
 import { TableProps } from "views/admin/default/variables/columnsData";
-import useApi from "hooks/useApi";
 
-export default function BlackListTable(props: TableProps) {
+export default function DepositRequestTable(props: TableProps) {
   const { columnsData, tableData } = props;
-  const { unbanUser } = useApi();
+
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -63,11 +62,6 @@ export default function BlackListTable(props: TableProps) {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-  const handleUnbanUser = async (userId: string) => {
-    await unbanUser(userId);
-    props.mutate();
-  };
-
   return (
     <Card
       flexDirection="column"
@@ -82,7 +76,7 @@ export default function BlackListTable(props: TableProps) {
           fontWeight="700"
           lineHeight="100%"
         >
-          Black list
+          Admin user
         </Text>
       </Flex>
       <Table {...getTableProps()} variant="simple" color="gray.500" mb="24px">
@@ -124,38 +118,6 @@ export default function BlackListTable(props: TableProps) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "ACTIVE") {
-                    data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          <Icon
-                            w="24px"
-                            h="24px"
-                            me="5px"
-                            color={cell.value ? "green.500" : "red.500"}
-                            as={cell.value ? MdCheckCircle : MdCancel}
-                          />
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "AFF CODE") {
-                    data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
-                    );
                   } else if (cell.column.Header === "USER NAME") {
                     data = (
                       <Flex align="center">
@@ -169,49 +131,74 @@ export default function BlackListTable(props: TableProps) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "EMAIL") {
+                  } else if (cell.column.Header === "FROM WALLET") {
                     data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {`${cell.value.slice(0, 6)}...${cell.value.slice(
+                          cell.value.length - 4,
+                          cell.value.length,
+                        )}`}
+                      </Text>
                     );
-                  } else if (cell.column.Header === "RANK") {
+                  } else if (cell.column.Header === "TO WALLET") {
+                    data = (
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {`${cell.value.slice(0, 6)}...${cell.value.slice(
+                          cell.value.length - 4,
+                          cell.value.length,
+                        )}`}
+                      </Text>
+                    );
+                  } else if (cell.column.Header === "HASH") {
+                    data = (
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {`${cell.value.slice(0, 6)}...${cell.value.slice(
+                          cell.value.length - 4,
+                          cell.value.length,
+                        )}`}
+                      </Text>
+                    );
+                  } else if (cell.column.Header === "AMOUNT") {
                     data = (
                       <Text color={textColor} fontSize="sm" fontWeight="700">
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "REGISTERED") {
+                  } else if (cell.column.Header === "COIN NAME") {
                     data = (
-                      <Flex align="center">
-                        <Text
-                          me="10px"
-                          color={textColor}
-                          fontSize="sm"
-                          fontWeight="700"
-                        >
-                          {cell.value}
-                        </Text>
-                      </Flex>
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {cell.value}
+                      </Text>
                     );
-                  } else if (cell.column.Header === "ACTION") {
+                  } else if (cell.column.Header === "DATE") {
                     data = (
-                      <Flex align="center" direction="column" gap={2}>
-                        <Button
-                          onClick={() => handleUnbanUser(row.cells[0].value)}
-                          size="sm"
-                          variant="link"
-                          colorScheme="green"
-                        >
-                          UnLock
-                        </Button>
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {cell.value}
+                      </Text>
+                    );
+                  } else if (cell.column.Header === "STATUS") {
+                    data = (
+                      <Flex color={textColor} fontSize="sm" fontWeight="700">
+                        <Icon
+                          w="24px"
+                          h="24px"
+                          me="5px"
+                          color={
+                            cell.value === "done"
+                              ? "green.500"
+                              : cell.value === "pending"
+                              ? "orange.500"
+                              : "red.500"
+                          }
+                          as={
+                            cell.value === "done"
+                              ? MdCheckCircle
+                              : cell.value === "pending"
+                              ? MdOutlineError
+                              : MdCancel
+                          }
+                        />
+                        {cell.value}
                       </Flex>
                     );
                   }

@@ -1,4 +1,6 @@
+import { AxiosResponse } from "axios";
 import { Column } from "react-table";
+import { KeyedMutator } from "swr";
 import tableDataCheck from "./tableDataCheck.json";
 
 export const columnsDataCheck = [
@@ -53,4 +55,5 @@ export type TableData = Column<{
 export type TableProps = {
   columnsData: ColumnData;
   tableData: TableData[];
+  mutate: any;
 };
