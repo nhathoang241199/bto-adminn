@@ -13,7 +13,6 @@ const useAdminWallet = () => {
     },
     getAdminWallet,
   );
-  console.log("data?.data.message.data: ", data?.data.message.data);
   return {
     adminWalletTableData: data?.data.message.data.map((item: any) => ({
       id: item.id,

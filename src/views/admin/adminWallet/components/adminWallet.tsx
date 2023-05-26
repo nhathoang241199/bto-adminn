@@ -46,8 +46,6 @@ import { MdCancel, MdCheckCircle } from "react-icons/md";
 export default function AdminWalletTable(props: TableProps) {
   const { columnsData, tableData } = props;
 
-  console.log("tableData: ", tableData);
-
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 

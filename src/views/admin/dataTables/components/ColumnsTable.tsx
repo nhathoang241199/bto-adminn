@@ -23,8 +23,6 @@ import Menu from "components/menu/MainMenu";
 import { TableProps } from "views/admin/default/variables/columnsData";
 export default function ColumnsTable(props: TableProps) {
   const { columnsData, tableData } = props;
-  console.log("columns: ", columnsData);
-  console.log("data: ", tableData);
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);

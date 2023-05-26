@@ -188,7 +188,6 @@ export default function PortalUserTable(props: TableProps) {
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data;
-                  console.log("row: ", row);
                   if (cell.column.Header === "ID") {
                     data = (
                       <Flex align="center">
